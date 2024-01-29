@@ -1,7 +1,7 @@
 from tkinter import*
 from subprocess import call
 from tkinter import messagebox as mb
-import mysql.connector
+# import mysql.connector
 
 win=Tk()
 win.geometry("600x300")
