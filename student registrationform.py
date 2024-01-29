@@ -1,0 +1,175 @@
+from tkinter import*
+from tkinter import ttk
+from subprocess import call
+import mysql.connector
+from tkinter import messagebox as mb
+
+win=Tk()
+win.geometry("600x700")
+
+def select():
+    x=var.get()
+    global genderselected;
+    if x==1:
+        genderselected="male"
+    elif x ==2:
+        genderselected="female"
+    elif x==3:
+        genderselected="others"    
+    else:
+        genderselected="error"
+def Clear_all():
+    win.destroy(0,END)
+        
+def Back():
+    win.destroy()
+    call(["pyw","studentlogin.py"])        
+        
+    
+var=IntVar()
+gender_rb1=Radiobutton(win,text="Male",value=1,command=select,variable=var)
+gender_rb1.place(x=170,y=415)
+gender_rb2=Radiobutton(win,text="Female",value=2,command=select,variable=var)
+gender_rb2.place(x=230,y=415)
+gender_rb3=Radiobutton(win,text="Others",value=3,command=select,variable=var)
+gender_rb3.place(x=300,y=415)
+
+def registration():
+
+    if len(t1.get())==0:
+        messagebox.showinfo("warning","Empid is blank please enter")
+        t1.focus_set()
+
+    elif len(t2.get())==0:
+        messagebox.showinfo("warning","FullName is blank please enter")
+        t2.focus_set()
+
+    elif len(t3.get())==0:
+        messagebox.showinfo("warning","Userid is blank please enter")
+        t3.focus_set()
+
+    elif len(t4.get())==0:
+        messagebox.showinfo("warning","Password is blank please enter")
+        t4.focus_set()
+    elif len(t5.get())==0:
+        messagebox.showinfo("warning","RollNo is blank please enter")
+        t5.focus_set()
+
+    elif len(t6.get())==0:
+        messagebox.showinfo("warning","MobileNo is blank please enter")
+        t6.focus_set()
+
+    elif len(t7.get())==0:
+        messagebox.showinfo("warning","Emailid is blank please enter")
+        t7.focus_set()
+
+    elif var.get() not in [1,2]:
+        messagebox.showinfo("","Gender not selected")
+
+    elif state_list.get() == "select":
+        messagebox.showinfo("","State not selected")
+        
+    elif bloodgroup_list.get() == "select":
+        messagebox.showinfo("","BloodGroup not selected")
+
+
+    else:
+        conn = mysql.connector.connect(user="root", password="deepika21", host="localhost", database="world")
+        cur=conn.cursor()
+
+    
+        Studentid=t1.get();
+        Full_Name=t2.get();
+        Userid=t3.get();
+        Password=t4.get();
+        RollNo=t5.get();
+        MobileNo=t6.get();
+        Emailid=t7.get();
+        AadharNo=t8.get();
+        genderselected;
+        BloodGroup=bloodgroup_list.get();
+        State=state_list.get();
+
+        sql="insert into stdregdform values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)";
+        val=(Studentid,Full_Name,Userid,Password,RollNo,MobileNo,Emailid,AadharNo,genderselected,BloodGroup,State)
+
+        cur.execute(sql,val)
+        conn.commit()
+        mb.showinfo("","Registration successfull")
+
+
+
+l1=Label(win,text="MENTOR SYSTEM",fg="black",bg="lightgreen",font=("calibri",20,"bold"))
+l1.place(x=150,y=20)
+
+l2=Label(win,text="Guidance For Students",fg="black",bg="lightpink",font=("calibri",15,"bold"))
+l2.place(x=150,y=70)
+
+
+l3=Label(win,text="Student Registration form",fg="black",font=("calibri",15,"bold"))
+l3.place(x=140,y=100)
+
+l4=Label(win,text="Studentid:",fg="black",font=("calibri",15,"bold"))
+l4.place(x=50,y=150)
+
+l5=Label(win,text="FullName:",fg="black",font=("calibri",15,"bold"))
+l5.place(x=50,y=180)
+l6=Label(win,text="Userid:",fg="black",font=("calibri",15,"bold"))
+l6.place(x=50,y=210)
+l7=Label(win,text="Password:",fg="black",font=("calibri",15,"bold"))
+l7.place(x=50,y=240)
+l7=Label(win,text="RollNo:",fg="black",font=("calibri",15,"bold"))
+l7.place(x=50,y=270)
+l7=Label(win,text="MobileNo.",fg="black",font=("calibri",15,"bold"))
+l7.place(x=50,y=300)
+l8=Label(win,text="Emailid:",fg="black",font=("calibri",15,"bold"))
+l8.place(x=50,y=330)
+l9=Label(win,text="AadhaarNo.:",fg="black",font=("calibri",15,"bold"))
+l9.place(x=50,y=360)
+
+l9=Label(win,text="Gender:",fg="black",font=("calibri",15,"bold"))
+l9.place(x=50,y=410)
+
+
+t1=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t1.place(x=170,y=150)
+t2=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t2.place(x=170,y=180)
+t3=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t3.place(x=170,y=210)
+t4=Entry(win,show='*',fg="black",bg="white",font=("calibri",15,"bold"))
+t4.place(x=170,y=240)
+t5=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t5.place(x=170,y=270)
+t6=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t6.place(x=170,y=300)
+t7=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t7.place(x=170,y=330)
+t8=Entry(win,fg="black",bg="white",font=("calibri",15,"bold"))
+t8.place(x=170,y=360)
+
+
+
+bloodgroup=Label(win,text="BloodGroup:",fg="black",font=("calibri",15,"bold"))
+bloodgroup.place(x=50,y=460)
+bloodgroup_list=ttk.Combobox(win,values=["O+","B-","AB+","B+","O-","AB+"])
+bloodgroup_list["state"]="readonly"
+bloodgroup_list.set("--Select--")
+bloodgroup_list.place(x=170,y=465)
+
+
+state=Label(win,text='State:',font=("calibri",15,"bold"))
+state.place(x=50,y=490)
+state_list=ttk.Combobox(win,values=["Odisha","Bihar","Assam","Goa","Gujurat","Himachal Pradesh","Jharkhand","Karnatak","kerala","Punjab","Sikkim","West Bengal","Telengana"])
+state_list["state"]="readonly"
+state_list.set("--Select--")
+state_list.place(x=170,y=490)
+
+register_button=Button(win,text="Register",fg="black",command=registration,bg="lightblue",font=("calibri",15,"bold"))
+register_button.place(x=150,y=540)
+clearall_button=Button(win,command=Clear_all,text="Clear all",fg="black",bg="lightblue",font=("calibri",15,"bold"))
+clearall_button.place(x=250,y=540)
+back_button=Button(win,text="<==",command=Back,fg="black",bg="red",font=("calibri",15,"bold"))
+back_button.place(x=500,y=590)
+
+win.mainloop()
